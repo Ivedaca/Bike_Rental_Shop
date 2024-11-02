@@ -1,34 +1,52 @@
 #!/bin/bash
 
-#Welcome message
+PSQL="psql -X --username=freecodecamp --dbname=bikes --tuples-only -c"
+
 echo -e "\n~~~~~ Bike Rental Shop ~~~~~\n"
 
 MAIN_MENU() {
-  #Checks if an argument has been passed to main_menu.
   if [[ $1 ]]
-    then
+  then
     echo -e "\n$1"
   fi
 
-  #Options to user.
   echo "How may I help you?" 
   echo -e "\n1. Rent a bike\n2. Return a bike\n3. Exit"
-
-  #Record keyboard information.
   read MAIN_MENU_SELECTION
 
-  #Sets the 3 options for the user and outside of those 3 options it returns to the main menu
   case $MAIN_MENU_SELECTION in
-  1) RENT_MENU ;;
-  2) RETURN_MENU ;;
-  3) EXIT ;;
-  *) MAIN_MENU "Please enter a valid option." ;;
+    1) RENT_MENU ;;
+    2) RETURN_MENU ;;
+    3) EXIT ;;
+    *) MAIN_MENU "Please enter a valid option." ;;
   esac
 }
 
 RENT_MENU() {
-  echo "Rent Menu"
- 
+  # get available bikes
+  AVAILABLE_BIKES=$($PSQL "SELECT bike_id, type, size FROM bikes WHERE available = true ORDER BY bike_id")
+  
+  # if no bikes available
+  if [[ -z $AVAILABLE_BIKES ]]
+  then
+    # send to main menu
+    MAIN_MENU "Sorry, we don't have any bikes available right now."
+  else
+    # display available bikes
+    echo -e "\nHere are the bikes we have available:"
+    # Prints the contents of the variable and then redirects (|) the output to while read, then
+    # BIKE_ID BAR TYPE BAR SIZE reads each line of AVAILABLE_BIKES and splits it into several variables BAR = space
+    echo "$AVAILABLE_BIKES" | while read BIKE_ID BAR TYPE BAR SIZE
+    do
+      echo "$BIKE_ID) $SIZE\" $TYPE Bike"
+    done
+    # ask for bike to rent
+
+    # if input is not a number
+
+    # send to main menu
+
+  fi
 }
 
 RETURN_MENU() {
@@ -40,4 +58,3 @@ EXIT() {
 }
 
 MAIN_MENU
-  
