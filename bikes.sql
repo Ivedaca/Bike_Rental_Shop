@@ -154,15 +154,15 @@ ALTER TABLE ONLY public.rentals ALTER COLUMN rental_id SET DEFAULT nextval('publ
 --
 
 COPY public.bikes (bike_id, type, size, available) FROM stdin;
-7	BMX	19	f
-8	BMX	20	f
-9	BMX	21	f
+8	BMX	20	t
+9	BMX	21	t
 1	Mountain	27	t
 2	Mountain	28	t
 3	Mountain	29	t
 4	Road	27	t
 5	Road	28	t
 6	Road	29	t
+7	BMX	19	t
 \.
 
 
@@ -171,6 +171,8 @@ COPY public.bikes (bike_id, type, size, available) FROM stdin;
 --
 
 COPY public.customers (customer_id, phone, name) FROM stdin;
+1	555-5555	Me
+2	000-0000	Test
 \.
 
 
@@ -179,6 +181,13 @@ COPY public.customers (customer_id, phone, name) FROM stdin;
 --
 
 COPY public.rentals (rental_id, customer_id, bike_id, date_rented, date_returned) FROM stdin;
+1	1	1	2021-05-25	2024-11-04
+2	1	2	2021-05-25	2024-11-04
+3	1	3	2021-05-27	2024-11-04
+4	1	4	2021-05-27	2024-11-04
+5	1	5	2021-05-27	2024-11-04
+6	2	6	2021-05-27	2024-11-04
+7	2	7	2021-05-27	2024-11-04
 \.
 
 
@@ -193,14 +202,14 @@ SELECT pg_catalog.setval('public.bikes_bike_id_seq', 9, true);
 -- Name: customers_customer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.customers_customer_id_seq', 1, false);
+SELECT pg_catalog.setval('public.customers_customer_id_seq', 2, true);
 
 
 --
 -- Name: rentals_rental_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.rentals_rental_id_seq', 1, false);
+SELECT pg_catalog.setval('public.rentals_rental_id_seq', 7, true);
 
 
 --
